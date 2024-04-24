@@ -62,6 +62,7 @@ def upload_image():
         if response.status_code == 201:
             response_json = response.json()
             result = response_json.get('result', {})
+            print(result)
             classification = result.get('classification', {})
             suggestions = classification.get('suggestions', [])
             
