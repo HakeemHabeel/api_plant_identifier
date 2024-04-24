@@ -78,7 +78,7 @@ def upload_image():
             image_url = url_for('uploaded_file', filename=filename, _external=True)
             
             # Redirect to the result page with the image URL and names as query parameters
-            return render_template('display_image.html', image_url=input_image_url)
+#             return render_template('display_image.html', image_url=input_image_url)
             return render_template('result.html', 
                                    input_image_url=details.get("image", {}).get("value"),
                                    first_common_name=','.join(details.get("common_names", [])),
