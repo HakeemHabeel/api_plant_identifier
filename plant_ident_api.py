@@ -79,7 +79,14 @@ def upload_image():
             
             # Redirect to the result page with the image URL and names as query parameters
             return render_template('display_image.html', image_url=input_image_url)
-#            return redirect(url_for('show_result', image_url=image_url, names=names))
+            return render_template('result.html', 
+                                   input_image_url=details.get("image", {}).get("value"),
+                                   first_common_name=','.join(details.get("common_names", [])),
+                                   first_sugg_tax=details.get("taxonomy", {}),
+                                   first_sugg_desc=details.get("description", {}).get("value", ""),
+                                   first_sugg_similar_image=details.get("image", {}).get("value", ""))
+    else:
+
         else:
             return f"Error: {response.status_code} - {response.reason}"
 
