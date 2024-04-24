@@ -65,7 +65,7 @@ def upload_image():
             classification = result.get('classification', {})
             suggestions = classification.get('suggestions', [])
             
-            names = [suggestion.get('name', 'Unknown') for suggestion in suggestions]
+            names = [suggestion.get('common_names', 'Unknown') for suggestion in suggestions]
             
             # Save the uploaded file with a secure filename
             filename = secure_filename(file.filename)
@@ -83,7 +83,7 @@ def upload_image():
 @app.route('/result')
 def show_result():
     image_url = request.args.get('image_url', '')
-    names = request.args.get('names', '').split(',')
+    names = request.args.get('common_names', '').split(',')
     
     return render_template('result.html', image_url=image_url, names=names)
 
