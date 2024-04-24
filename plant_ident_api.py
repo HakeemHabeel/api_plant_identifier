@@ -76,7 +76,7 @@ def upload_image():
             image_url = url_for('uploaded_file', filename=filename, _external=True)
             
             # Redirect to the result page with the image URL and names as query parameters
-            return redirect(url_for('show_result', image_url=image_url, names=result))
+            return redirect(url_for('show_result', image_url=image_url, names=names))
         else:
             return f"Error: {response.status_code} - {response.reason}"
 
