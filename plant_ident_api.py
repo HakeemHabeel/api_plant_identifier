@@ -83,8 +83,7 @@ def upload_image():
 @app.route('/result')
 def show_result():
     image_url = request.args.get('image_url', '')
-    names = request.args.get('names', '')
-#     .split(',')
+    names = request.args.get('names', '').split(',')
     
     return render_template('result.html', image_url=image_url, names=names)
 
