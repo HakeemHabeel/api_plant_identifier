@@ -39,22 +39,26 @@ def upload_image():
         image_data = file.read()
         base64_image = base64.b64encode(image_data).decode('utf-8')
         
+        api_keys = ['isHfA6zuJa5VH8K8jXICjeYLb0GsA4RnEfVPf6EAUOjqOGSCk3', 'rqf8HRSDf6EUdKXDpgkGfh6p4PAmTHduywl0Q9yMxbmX2FzL2C']
         url = 'https://plant.id/api/v3/identification'
-        api_key = 'isHfA6zuJa5VH8K8jXICjeYLb0GsA4RnEfVPf6EAUOjqOGSCk3'
-        headers = {
-            'Api-Key': api_key,
-            'Content-Type': 'application/json'
-        }
         
-        request_data = {
-            "images": base64_image,
-            "latitude": 49.207,
-            "longitude": 16.608,
-            "similar_images": True
-        }
-        
-        response = requests.post(url, headers=headers, json=request_data)
-        
+        for api_key in api_keys:
+            headers = {
+                'Api-Key': api_key,
+                'Content-Type': 'application/json'
+            }
+            
+            request_data = {
+                "images": base64_image,
+                "latitude": 49.207,
+                "longitude": 16.608,
+                "similar_images": True
+            }
+            
+            response = requests.post(url, headers=headers, json=request_data)
+            if response.status_code == 201:
+                break  # If successful, break out of the loop
+
         if response.status_code == 201:
             response_json = response.json()
             result = response_json.get('result', {})
@@ -78,9 +82,8 @@ def upload_image():
 
 @app.route('/result')
 def show_result():
-    # Retrieve the image URL and names from the query parameters
     image_url = request.args.get('image_url', '')
-    names = request.args.get('names', '').split(',')  # Split the names string into a list
+    names = request.args.get('names', '').split(',')
     
     return render_template('result.html', image_url=image_url, names=names)
 
