@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+</head>
+<body>
+    <h2>Upload an Image</h2>
+    <form method="POST" enctype="multipart/form-data" action="http://localhost:8000/upload" id="upload-form">
+        <input type="file" id="file" name="file" accept="image/*">
+        <input type="submit" value="Upload">
+    </form>
+    <div id="image-preview"></div>
+
+    <script>
+        // Function to display a preview of the selected image
+        function previewImage() {
+            var fileInput = document.getElementById('file');
+            var imagePreview = document.getElementById('image-preview');
+
+            fileInput.addEventListener('change', function() {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var imageUrl = e.target.result;
+                    var imgElement = document.createElement('img');
+                    imgElement.src = imageUrl;
+                    imgElement.style.maxWidth = '100%';
+                    imgElement.style.height = 'auto';
+                    imagePreview.innerHTML = '';
+                    imagePreview.appendChild(imgElement);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Call the previewImage function when the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            previewImage();
+        });
+    </script>
+</body>
+</html>
