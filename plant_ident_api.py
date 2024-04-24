@@ -61,35 +61,27 @@ def upload_image():
 
         if response.status_code == 201:
             response_json = response.json()
-            result = response_json.get('result', {})
-            classification = result.get('classification', {})
-            suggestions = classification.get('suggestions', [])
+            access_token = response_json.get("access_token")
+            url_details = "https://plant.id/api/v3/identification/{}?details=common_names,url,description,taxonomy,image".format(access_token)
+            response_details = requests.get(url_details, headers=headers)
+            input_image_url = response_details.json().get("input").get("images")[0]
+            first_suggestion = response_details.json().get("result").get("classification").get("suggestions")[0]
+            first_sugg_details = first_suggestion.get("details")
+            first_common_name = first_sugg_details.get("common_names")[0]
+            first_sugg_tax = first_sugg_details.get("taxonomy")
+            first_sugg_desc = first_sugg_details.get("description")
+            first_sugg_similar_image = first_sugg_details.get("image")
             
-            names = [suggestion.get('common_names', 'Unknown') for suggestion in suggestions]
-            
-            # Save the uploaded file with a secure filename
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+
             
             # Construct the URL of the uploaded image
             image_url = url_for('uploaded_file', filename=filename, _external=True)
             
             # Redirect to the result page with the image URL and names as query parameters
-            return redirect(url_for('show_result', image_url=image_url, names=names))
+            return render_template('display_image.html', image_url=input_image_url)
+#            return redirect(url_for('show_result', image_url=image_url, names=names))
         else:
             return f"Error: {response.status_code} - {response.reason}"
-
-@app.route('/result')
-def show_result():
-    image_url = request.args.get('image_url', '')
-    names = request.args.get('common_names', '').split(',')
-    
-    return render_template('result.html', image_url=image_url, names=names)
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000, use_reloader=False)
