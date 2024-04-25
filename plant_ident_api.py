@@ -85,8 +85,6 @@ def upload_image():
                                    first_sugg_tax=details.get("taxonomy", {}),
                                    first_sugg_desc=details.get("description", {}).get("value", ""),
                                    first_sugg_similar_image=details.get("image", {}).get("value", ""))
-    else:
-
         else:
             return f"Error: {response.status_code} - {response.reason}"
 
