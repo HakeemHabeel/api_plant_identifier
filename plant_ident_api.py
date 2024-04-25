@@ -39,7 +39,7 @@ def upload_image():
         image_data = file.read()
         base64_image = base64.b64encode(image_data).decode('utf-8')
         
-        api_keys = ['isHfA6zuJa5VH8K8jXICjeYLb0GsA4RnEfVPf6EAUOjqOGSCk3', 'rqf8HRSDf6EUdKXDpgkGfh6p4PAmTHduywl0Q9yMxbmX2FzL2C']
+        api_keys = ['qDlJGO91zpabtfDXohxoY3BPSUI0gtp0OuXBcxGtJwJtBwTmPC', 'rqf8HRSDf6EUdKXDpgkGfh6p4PAmTHduywl0Q9yMxbmX2FzL2C']
         url = 'https://plant.id/api/v3/identification'
         
         for api_key in api_keys:
